@@ -35,5 +35,7 @@ jobs:
       
     - name: list files
       run: ls -a
-
+      
+    - name: mkdir targrt
+      run: mkdir staging && cp target/*jar-with-dependencies.jar staging
     
