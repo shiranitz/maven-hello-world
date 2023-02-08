@@ -31,6 +31,9 @@ jobs:
       run: mvn -B package --file myapp/pom.xml
     
     - name: list files
+      run: cd myapp
+      
+    - name: list files
       run: ls -a
 
     
