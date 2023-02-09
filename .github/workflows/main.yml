@@ -31,7 +31,9 @@ jobs:
         echo "${{ env.TAG }}"
         docker rmi shiranitz/home_project:${{ env.TAG }}
         docker images
-        echo "TAG=$(echo '1.0.2')" > ${{ vars.TAG }}
+        echo "TAG=$(echo '1.0.2')" >> $GITHUB_ENV
+        echo "${{ env.TAG }}"
+
 
 
     - name: Bump jar version
