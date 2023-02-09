@@ -26,7 +26,7 @@ jobs:
       
     - name: pulling &take tag
       run: |
-        docker pull shiranitz/home_project
+        docker pull shiranitz/home_project:$TAG
         echo hiiiiiiiiii!!!!!!!!!!
         echo "TAG=$(docker images | sed '2!d' | awk '{print $2}')" >> $GITHUB_ENV
         echo "$TAG"
