@@ -2,9 +2,8 @@ name: Multi-stage docker javaapp
 
 on:
   [push]
-
 env:
-  MY_VAR: 1.0.0
+   TAG: ${{ vars.TAG }}
 
 jobs:
   build:
