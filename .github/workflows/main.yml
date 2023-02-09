@@ -28,7 +28,8 @@ jobs:
       run: |
         docker pull shiranitz/home_project:1.0.1
         TAG = docker images home_project | sed '2!d' | awk '{print $2}'
-        docker rmi shiranitz/home_project:TAG
+        echo ${TAG}
+        docker rmi shiranitz/home_project:${TAG}
 
 
     - name: Bump jar version
