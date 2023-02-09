@@ -31,7 +31,7 @@ jobs:
         echo "${{ env.TAG }}"
         docker rmi shiranitz/home_project:${{ env.TAG }}
         docker images 
-        echo "1.0.2" > ${{ env.TAG }}
+        echo '1.0.2' >> ${{ env.TAG }}
         echo "${{ env.TAG }}"
 
 
