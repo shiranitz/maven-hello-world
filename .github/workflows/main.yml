@@ -29,9 +29,7 @@ jobs:
         mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file $POMPATH/pom.xml
         echo ::set-output name=jar_version::${NEW_VERSION}
         
-    - name: echo project version
-      run: cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout
-
+    
     - name: Docker build
       run: |
         docker build . -t shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
