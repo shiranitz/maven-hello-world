@@ -30,7 +30,7 @@ jobs:
         echo ::set-output name=jar_version::${NEW_VERSION}
         
     - name: echo project version
-      run: OLD_VERSION=$(cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+      run: cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout
 
     - name: Docker build
       run: |
