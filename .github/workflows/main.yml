@@ -26,7 +26,7 @@ jobs:
       
     - name: pulling &take tag
       run: |
-        docker pull shiranitz/home_project:1.0.1
+        docker pull shiranitz/home_project
         echo hiiiiiiiiii!!!!!!!!!!
         TAG=$(docker images | sed '2!d' | awk '{print $2}')
         echo "$TAG"
