@@ -30,9 +30,10 @@ jobs:
         echo "TAG=$(docker images | sed '2!d' | awk '{print $2}')" >> $GITHUB_ENV
         echo "${{ env.TAG }}"
         docker rmi shiranitz/home_project:${{ env.TAG }}
-        docker images
-        echo "TAG=$(echo '1.0.2')" >> $GITHUB_ENV
+        docker images 
+        ${{ env.TAG }} = "1.0.2"
         echo "${{ env.TAG }}"
+
 
 
 
