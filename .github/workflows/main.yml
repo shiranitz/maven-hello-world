@@ -32,6 +32,7 @@ jobs:
         docker rmi shiranitz/home_project:${{ env.TAG }}
         docker images 
         echo "TAG=$(echo '1.0.2')" > $GITHUB_ENV
+        echo "::set-env name=TAG::$(echo '1.0.2')"
         echo "${{env.TAG}}"
 
 
