@@ -55,4 +55,5 @@ jobs:
         
     - name: Run container
       run: |
-        docker run -i shiranitz/home_project:1.0.1
+        docker run -i shiranitz/home_project:${{needs.build.outputs.jar_version}}
+
