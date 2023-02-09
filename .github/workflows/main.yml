@@ -28,6 +28,8 @@ jobs:
         echo "pom.xml at" $POMPATH "will be bumped from" $OLD_VERSION "to" $NEW_VERSION
         mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file $POMPATH/pom.xml
         echo ::set-output name=jar_version::${NEW_VERSION}
+        mvn versions:update-dependencies
+
         
     
     - name: Docker build
