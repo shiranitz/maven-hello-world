@@ -4,6 +4,7 @@ on:
   [push]
 env:
    TAG: ${{ vars.TAG }}
+   ACTIONS_ALLOW_UNSECURE_COMMANDS: True
 
 jobs:
   build:
