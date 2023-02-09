@@ -23,10 +23,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: pulling &take tag
       run: |
-      docker pull shiranitz/home_project:1.0.1
-      TAG = docker images home_project | sed '2!d' | awk '{print $2}'
-      docker rmi shiranitz/home_project:TAG
+        docker pull shiranitz/home_project:1.0.1
+        TAG = docker images home_project | sed '2!d' | awk '{print $2}'
+        docker rmi shiranitz/home_project:TAG
 
 
     - name: Bump jar version
