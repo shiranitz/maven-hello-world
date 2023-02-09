@@ -31,6 +31,8 @@ jobs:
         mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file $POMPATH/pom.xml
         echo ::set-output name=jar_version::${NEW_VERSION}
         sed -i "s/$OLD_VERSION/$NEW_VERSION/g" $POMPATH/pom.xml
+        git config --global user.email "shiranitz15@gmail.com"
+        git config --global user.name "shiranitz"
         git add -A
         git commit -m "[skip ci]"
         git push
