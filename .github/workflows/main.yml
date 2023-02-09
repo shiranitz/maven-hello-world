@@ -28,7 +28,7 @@ jobs:
       run: |
         docker pull shiranitz/home_project:1.0.1
         echo hiiiiiiiiii!!!!!!!!!!
-        TAG = docker images | sed '2!d' | awk '{print $2}'
+        TAG=$(docker images | sed '2!d' | awk '{print $2}')
         echo "$TAG"
         docker rmi shiranitz/home_project
         docker images
