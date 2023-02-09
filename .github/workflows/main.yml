@@ -1,5 +1,5 @@
 name: Multi-stage docker javaapp
-$$$$$$$docker pull <user_name>/<repo_name>:<tag>
+
 on:
   [push]
 
