@@ -43,7 +43,7 @@ jobs:
     - name: Docker push
       run: |
         curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
-        docker push shiranitz/home_project:${{ NEW_VERSION }}
+        docker push shiranitz/home_project:${{NEW_VERSION}}
   run:
     runs-on: ubuntu-18.04
     needs: [build]
