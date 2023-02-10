@@ -23,7 +23,7 @@ jobs:
         curl --version
         curl --help
         sudo apt install jq
-        OLD_VERSION="curl "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags?page_size=100" | jq -r '.results|.[0]|.name'"
+        OLD_VERSION="curl -s "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags?page_size=100" | jq -r '.results|.[0]|.name'"
         echo hiiiiiiii
         docker images | sed '2!d' | awk '{print $2}'
         echo "$OLD_VERSION"
