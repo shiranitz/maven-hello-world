@@ -2,9 +2,7 @@ name: Multi-stage docker javaapp
 
 on:
   [push]
-env:
-   TAG: ${{ vars.TAG }}
-   ACTIONS_ALLOW_UNSECURE_COMMANDS: True
+
 
 jobs:
   build:
@@ -43,7 +41,13 @@ jobs:
       id: bump
       run: |
         POMPATH=myapp
-        OLD_VERSION=$(cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        OLD_VERSION=curl -s "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags?page_size=100" | jq -r '.results|.[0]|.name'
+        echo "$OLD_VERSION"
+        parts=( ${OLD_VERSION//./ } )
+        PATCH=$((parts[2] + 1))
+        NEW_VERSION="${parts[0]}.${parts[1]}.${PATCH}"
+        echo "$NAEW_VERSION"
+        
         BUMP_MODE="none"
         old="$OLD_VERSION"
         parts=( ${old//./ } )
