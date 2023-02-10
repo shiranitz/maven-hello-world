@@ -33,7 +33,7 @@ jobs:
         PATCH=$((${OLD_VERSION[@]:4:5} + 1)) 
         NEW_VERSION=${OLD_VERSION[@]::4}$PATCH
         echo "old version --> $OLD_VERSION"
-        docker build . --tag shiranitz/home_project:${{ NEW_VERSION }}
+        docker build . --tag shiranitz/home_project:$NEW_VERSION
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
@@ -43,7 +43,7 @@ jobs:
     - name: Docker push
       run: |
         curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
-        docker push shiranitz/home_project
+        docker push shiranitz/home_project:$(NEW_VERSION)
   run:
     runs-on: ubuntu-18.04
     needs: [build]
