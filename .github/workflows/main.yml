@@ -23,7 +23,7 @@ jobs:
         echo "old version --> $OLD_VERSION"
         PATCH=$((${OLD_VERSION[@]:4:5} + 1)) 
         NEW_TAG=${OLD_VERSION[@]::4}$PATCH
-        echo "new version --> "$NEW_VERSION" "
+        echo "new version --> $NEW_VERSION "
         
         
     
