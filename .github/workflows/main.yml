@@ -3,6 +3,7 @@ name: Multi-stage docker javaapp
 on:
   [push]
 
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -10,7 +11,7 @@ jobs:
       contents: read
       packages: write
     outputs:
-      jar_version: ${{ steps.bump.outputs.jar_version }}
+      jar_version: ${{ steps.bump.outputs.jar_version}}
 
     steps:
     - uses: actions/checkout@v2
@@ -18,23 +19,20 @@ jobs:
     - name: Bump jar version
       id: bump
       run: |
-        POMPATH=myapp
-        OLD_VERSION=$(cd $POMPATH && mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+        OLD_VERSION=$(curl -s "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags/?page_size=100" | jq -r '.results[0].name')
         BUMP_MODE="none"
-        old="$OLD_VERSION"
-        parts=( ${old//./ } )
-        bv=$((parts[2] + 1))
-        NEW_VERSION="${parts[0]}.${parts[1]}.${bv}-SNAPSHOT"
-        echo $NEW_VERSION $OLD_VERSION
-        echo "pom.xml at" $POMPATH "will be bumped from" $OLD_VERSION "to" $NEW_VERSION
-        mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file $POMPATH/pom.xml
+        echo "old version --> $OLD_VERSION"
+        PATCH=$((${OLD_VERSION[@]:4:5} + 1)) 
+        NEW_VERSION=${OLD_VERSION[@]::4}$PATCH
+        echo "new version --> $NEW_VERSION "
         echo ::set-output name=jar_version::${NEW_VERSION}
-        sed -i "s/$OLD_VERSION/$NEW_VERSION/g" $POMPATH/pom.xml
+        
         
     
     - name: Docker build
       run: |
-        docker build . -t shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
+        docker build . --tag shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
+    
     - name: Login to DockerHub
       uses: docker/login-action@v1
       with:
@@ -43,6 +41,7 @@ jobs:
 
     - name: Docker push
       run: |
+        curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
         docker push shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
   run:
     runs-on: ubuntu-18.04
