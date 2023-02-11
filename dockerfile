@@ -4,8 +4,9 @@ COPY . .
 RUN mvn package --file ./myapp/pom.xml
 
 FROM openjdk
-RUN groupadd -r appgroup && useradd -r shiranuser -G appgroup
-WORKDIR root/
-COPY --from=build root/myapp/target/*.jar .
+RUN useradd -ms /bin/bash shiranuser
+WORKDIR /home/shiranuser
+COPY --from=build root/myapp/target/*.jar . 
+USER shiranuser
 CMD whoami && java -jar *.jar
 
