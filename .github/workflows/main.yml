@@ -1,37 +1,45 @@
 name: Multi-stage docker javaapp
 
+# Trigger the workflow when code is pushed to the repository
 on:
   [push]
 
 
 jobs:
+# Define the build job
   build:
+    # ubuntu environment to run the job on
     runs-on: ubuntu-latest
+    # permissions for the job
     permissions:
       contents: read
       packages: write
+    # Define the output variable for the versining  
     outputs:
-      jar_version: ${{ steps.bump.outputs.jar_version}}
+      jar_version: ${{ steps.patch_fix.outputs.jar_version}}
 
     steps:
+    # Fetch the latest code in the repository
     - uses: actions/checkout@v2
 
-    - name: Bump jar version
-      id: bump
+    - name: patching jar version
+      id: patch_fix
       run: |
+        # Get the latest version from Docker Hub
         OLD_VERSION=$(curl -s "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags/?page_size=100" | jq -r '.results[0].name')
-        BUMP_MODE="none"
-        echo "old version --> $OLD_VERSION"
+        # Increment the patch version
         PATCH=$((${OLD_VERSION[@]:4:5} + 1)) 
         NEW_VERSION=${OLD_VERSION[@]::4}$PATCH
-        echo "new version --> $NEW_VERSION "
+        # Set the output variable for the new version
         echo ::set-output name=jar_version::${NEW_VERSION}
+        # Set the new version of jar file in the maven project
+        mvn -q versions:set -DnewVersion="${NEW_VERSION}" --file myapp/pom.xml
         
         
-    
+    # Build the Docker image + taging new version tag
     - name: Docker build
       run: |
-        docker build . --tag shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
+        docker build . --tag shiranitz/home_project:${{ steps.patch_fix.outputs.jar_version }}
     
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -39,12 +47,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: Docker push
+    - name: Docker push to Dockerhub
       run: |
         curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
-        docker push shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
+        docker push shiranitz/home_project:${{ steps.patch_fix.outputs.jar_version }}
+  
+  # Define the run job
   run:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
+    # Specify the build job as a dependency for starting run job
     needs: [build]
 
     steps:
@@ -53,8 +64,9 @@ jobs:
       with:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
-        
+    
+    # Run the Docker container with attaching the output
     - name: Run container
       run: |
-        docker run -i shiranitz/home_project:${{needs.build.outputs.jar_version}}
+        docker run -a stdout shiranitz/home_project:${{needs.build.outputs.jar_version}}
 
