@@ -68,5 +68,5 @@ jobs:
     # Run the Docker container with attaching the output
     - name: Run container
       run: |
-        docker run -a stdout shiranitz/home_project:${{needs.patch_fix.outputs.jar_version}}
+        docker run -i shiranitz/home_project:${{needs.patch_fix.outputs.jar_version}}
 
