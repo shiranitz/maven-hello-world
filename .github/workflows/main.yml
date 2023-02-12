@@ -49,7 +49,7 @@ jobs:
 
     - name: Docker push to Dockerhub
       run: |
-        curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
+        #curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
         docker push shiranitz/home_project:${{ steps.patch_fix.outputs.jar_version }}
   
   # Define the run job
