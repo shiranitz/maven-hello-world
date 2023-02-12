@@ -16,7 +16,7 @@ jobs:
       packages: write
     # Define the output variable for the versining  
     outputs:
-      jar_version: ${{ steps.bump.outputs.jar_version}}
+      jar_version: ${{ steps.patch_fix.outputs.jar_version}}
 
     steps:
     # Fetch the latest code in the repository
@@ -39,7 +39,7 @@ jobs:
     # Build the Docker image + taging new version tag
     - name: Docker build
       run: |
-        docker build . --tag shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
+        docker build . --tag shiranitz/home_project:${{ steps.patch_fix.outputs.jar_version }}
     
     - name: Login to DockerHub
       uses: docker/login-action@v1
@@ -50,7 +50,7 @@ jobs:
     - name: Docker push to Dockerhub
       run: |
         curl https://hub.docker.com/repository/docker/shiranitz/home_project/general
-        docker push shiranitz/home_project:${{ steps.bump.outputs.jar_version }}
+        docker push shiranitz/home_project:${{ steps.patch_fix.outputs.jar_version }}
   
   # Define the run job
   run:
@@ -68,5 +68,5 @@ jobs:
     # Run the Docker container with attaching the output
     - name: Run container
       run: |
-        docker run -a stdout shiranitz/home_project:${{needs.build.outputs.jar_version}}
+        docker run -a stdout shiranitz/home_project:${{needs.patch_fix.outputs.jar_version}}
 
