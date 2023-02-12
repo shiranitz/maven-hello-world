@@ -1,26 +1,30 @@
 name: Multi-stage docker javaapp
 
+# Trigger the workflow when code is pushed to the repository
 on:
   [push]
 
 
 jobs:
   build:
+    # ubuntu environment to run the job on
     runs-on: ubuntu-latest
+    # permissions for the job
     permissions:
       contents: read
       packages: write
+    # Define the output variable for the versining  
     outputs:
       jar_version: ${{ steps.bump.outputs.jar_version}}
 
     steps:
+    # fetch the latest code in the repository
     - uses: actions/checkout@v2
 
-    - name: Bump jar version
+    - name: patching jar version
       id: bump
       run: |
         OLD_VERSION=$(curl -s "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags/?page_size=100" | jq -r '.results[0].name')
-        BUMP_MODE="none"
         echo "old version --> $OLD_VERSION"
         PATCH=$((${OLD_VERSION[@]:4:5} + 1)) 
         NEW_VERSION=${OLD_VERSION[@]::4}$PATCH
