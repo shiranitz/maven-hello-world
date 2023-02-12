@@ -18,14 +18,15 @@ jobs:
       jar_version: ${{ steps.bump.outputs.jar_version}}
 
     steps:
-    # fetch the latest code in the repository
+    # Fetch the latest code in the repository
     - uses: actions/checkout@v2
 
     - name: patching jar version
       id: bump
       run: |
+        # Get the latest version from Docker Hub
         OLD_VERSION=$(curl -s "https://hub.docker.com/v2/repositories/shiranitz/home_project/tags/?page_size=100" | jq -r '.results[0].name')
-        echo "old version --> $OLD_VERSION"
+        # Increment the patch version
         PATCH=$((${OLD_VERSION[@]:4:5} + 1)) 
         NEW_VERSION=${OLD_VERSION[@]::4}$PATCH
         echo "new version --> $NEW_VERSION "
