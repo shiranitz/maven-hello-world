@@ -7,7 +7,7 @@ COPY . .
 RUN mvn package --file ./myapp/pom.xml
 
 # Base image to use for running the Java application
-FROM openjdk:14-alpine
+FROM openjdk
 RUN useradd -ms /bin/bash shiranuser
 WORKDIR /home/shiranuser
 # Copy thejar file from the build stage to the image
