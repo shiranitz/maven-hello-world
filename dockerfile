@@ -5,7 +5,6 @@ WORKDIR root/
 COPY . .
 # Compile and packeg the Java application using the pom.xml file in the myapp directory
 RUN mvn package --file ./myapp/pom.xml
-
 # Base image to use for running the Java application
 FROM openjdk
 # Create a new user'shiranuser' + (s) sets their default shell to '/bin/bash' + (m) creates the user's home directory
