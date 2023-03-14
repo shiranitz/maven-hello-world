@@ -7,7 +7,7 @@ COPY . .
 RUN mvn package --file ./myapp/pom.xml
 
 # Base image to use for running the Java application
-FROM openjdk
+FROM openjdk:11.0.11-jre-slim
 # Create a new user'shiranuser' + (s) sets their default shell to '/bin/bash' + (m) creates the user's home directory
 RUN useradd -ms /bin/bash shiranuser
 WORKDIR /home/shiranuser
